@@ -40,7 +40,7 @@ public class Application extends javafx.application.Application {
         Button addPointBtn = new Button("Add Point");
         addPointBtn.setOnAction(e -> {
             Point point = new Point((int) (Math.random() * canvas.getWidth()), (int) (Math.random() * canvas.getHeight()));
-            if (!graph.tryAddPoint(point)) return;
+            if (!graph.tryAddPoint(point)) System.out.printf("Failed to add point (%s, %s)", point.x, point.y);
         });
         buttons.getChildren().add(addPointBtn);
 
@@ -53,7 +53,7 @@ public class Application extends javafx.application.Application {
             Point p1 = points.get(index1);
             Point p2 = points.get(index2);
 
-            if (!graph.tryAddSegment(new Segment (p1, p2))) return;
+            if (!graph.tryAddSegment(new Segment (p1, p2))) System.out.println("Failed to add segment");
         });
         buttons.getChildren().add(addSegmentBtn);
 
