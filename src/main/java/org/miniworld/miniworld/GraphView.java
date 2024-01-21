@@ -42,12 +42,14 @@ public class GraphView extends Canvas {
         if (event.getButton() == MouseButton.SECONDARY) {
             if (this.hovered != null) {
                 this.graph.removePoint(this.hovered);
+                this.hovered = null;
             }
         } else {
             if (this.hovered != null) {
                 this.selected = hovered;
             } else {
                 this.selected = p;
+                this.hovered = p;
                 graph.addPoint(p);
             }
         }
