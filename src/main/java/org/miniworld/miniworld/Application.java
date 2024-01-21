@@ -2,7 +2,6 @@ package org.miniworld.miniworld;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -18,28 +17,26 @@ public class Application extends javafx.application.Application {
         StackPane root = new StackPane();
         SpatialGraph graph = SpatialGraph.dummyGraph();
 
-        Canvas canvas = new Canvas(600, 600);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        GraphView graphView = new GraphView(600, 600, graph);
+        GraphicsContext gc = graphView.getContext();
 
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-                drawGraph(graph, gc);
+                gc.clearRect(0, 0, graphView.getWidth(), graphView.getHeight());
+                graphView.drawGraph();
             }
         };
         animationTimer.start();
 
-        drawGraph(graph, gc);
-
-        root.getChildren().add(canvas);
+        root.getChildren().add(graphView);
 
         // BUTTONS (REMOVE LATER)
         HBox buttons = new HBox();
 
         Button addPointBtn = new Button("Add Point");
         addPointBtn.setOnAction(e -> {
-            Point point = new Point((int) (Math.random() * canvas.getWidth()), (int) (Math.random() * canvas.getHeight()));
+            Point point = new Point((int) (Math.random() * graphView.getWidth()), (int) (Math.random() * graphView.getHeight()));
             if (!graph.tryAddPoint(point)) System.out.printf("Failed to add point (%s, %s)", point.x, point.y);
         });
         buttons.getChildren().add(addPointBtn);
@@ -89,19 +86,5 @@ public class Application extends javafx.application.Application {
 
     public static void main(String[] args) {
         launch();
-    }
-
-    private void drawGraph(SpatialGraph graph, GraphicsContext gc) {
-        for (Segment segment : graph.segments) {
-            gc.beginPath();
-            gc.moveTo(segment.p1.x, segment.p1.y);
-            gc.lineTo(segment.p2.x, segment.p2.y);
-            gc.stroke();
-        }
-
-        for (Point point : graph.points) {
-            gc.setFill(Color.BLACK);
-            gc.fillOval(point.x - 6, point.y - 6, 12, 12);
-        }
     }
 }
