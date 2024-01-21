@@ -60,13 +60,17 @@ public class SpatialGraph {
     }
 
     public Point getNearestPointTo(Point point, double threshold) {
+        return getNearestPointToCoordinates(point.x, point.y, threshold);
+    }
+
+    public Point getNearestPointToCoordinates(double x, double y, double threshold) {
         double closestDistance = Integer.MAX_VALUE;
         Point nearest = null;
 
         for (Point p : this.points) {
             // Feels like an unnecessary optimisation
-            if (Math.abs(point.x - p.x) > closestDistance || Math.abs(point.y - p.y) > closestDistance) continue;
-            double newDistance = Math.hypot(point.x - p.x, point.y - p.y);
+            if (Math.abs(x - p.x) > closestDistance || Math.abs(y - p.y) > closestDistance) continue;
+            double newDistance = Math.hypot(x - p.x, y - p.y);
             if (newDistance < threshold && newDistance < closestDistance) {
                 nearest = p;
                 closestDistance = newDistance;

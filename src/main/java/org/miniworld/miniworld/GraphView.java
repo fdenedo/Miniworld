@@ -27,6 +27,7 @@ public class GraphView extends Canvas {
         this.hovered = null;
 
         this.setOnMouseClicked(this::handleMouseClicked);
+        this.setOnMouseMoved(this::handleMouseMoved);
     }
 
     public GraphicsContext getContext() {
@@ -37,7 +38,6 @@ public class GraphView extends Canvas {
         Point p = new Point(event.getX(), event.getY());
 
         System.out.println("Mouse Clicked at: (" + p.x + ", " + p.y + ")");
-        this.hovered = this.graph.getNearestPointTo(p, POINT_RADIUS * 1.2);
 
         if (this.hovered != null) {
             this.selected = hovered;
@@ -45,6 +45,10 @@ public class GraphView extends Canvas {
             this.selected = p;
             graph.addPoint(p);
         }
+    }
+
+    public void handleMouseMoved(MouseEvent event) {
+        this.hovered = this.graph.getNearestPointToCoordinates(event.getX(), event.getY(), POINT_RADIUS * 1.2);
     }
 
     public void drawGraph() {
@@ -78,6 +82,16 @@ public class GraphView extends Canvas {
                     point.y - (POINT_RADIUS * selectedLineRatio),
                     POINT_DIAMETER * selectedLineRatio,
                     POINT_DIAMETER * selectedLineRatio
+            );
+        } else if (this.hovered == point) {
+            double hoveredRatio = 0.2;
+            context.setStroke(POINT_SELECTED_COLOUR);
+            context.setLineWidth(3);
+            context.strokeOval(
+                    point.x - (POINT_RADIUS * hoveredRatio),
+                    point.y - (POINT_RADIUS * hoveredRatio),
+                    POINT_DIAMETER * hoveredRatio,
+                    POINT_DIAMETER * hoveredRatio
             );
         }
     }
