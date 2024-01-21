@@ -1,5 +1,6 @@
 package org.miniworld.miniworld;
 
+import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -19,6 +20,16 @@ public class Application extends javafx.application.Application {
 
         Canvas canvas = new Canvas(600, 600);
         GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                drawGraph(graph, gc);
+            }
+        };
+        animationTimer.start();
+
         drawGraph(graph, gc);
 
         root.getChildren().add(canvas);
@@ -30,8 +41,6 @@ public class Application extends javafx.application.Application {
         addPointBtn.setOnAction(e -> {
             Point point = new Point((int) (Math.random() * canvas.getWidth()), (int) (Math.random() * canvas.getHeight()));
             if (!graph.tryAddPoint(point)) return;
-            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawGraph(graph, gc);
         });
         buttons.getChildren().add(addPointBtn);
 
@@ -45,9 +54,6 @@ public class Application extends javafx.application.Application {
             Point p2 = points.get(index2);
 
             if (!graph.tryAddSegment(new Segment (p1, p2))) return;
-
-            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawGraph(graph, gc);
         });
         buttons.getChildren().add(addSegmentBtn);
 
@@ -58,9 +64,6 @@ public class Application extends javafx.application.Application {
 
             int randomPointIndex = (int) (Math.random() * points.size());
             graph.removePoint(randomPointIndex);
-
-            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawGraph(graph, gc);
         });
         buttons.getChildren().add(removePointBtn);
 
@@ -71,9 +74,6 @@ public class Application extends javafx.application.Application {
 
             int randomSegmentIndex = (int) (Math.random() * segments.size());
             graph.removeSegment(segments.get(randomSegmentIndex));
-
-            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawGraph(graph, gc);
         });
         buttons.getChildren().add(removeSegmentBtn);
 
