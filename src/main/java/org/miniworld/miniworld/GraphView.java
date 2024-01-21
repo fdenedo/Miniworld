@@ -2,6 +2,7 @@ package org.miniworld.miniworld;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 public class GraphView extends Canvas {
@@ -17,10 +18,20 @@ public class GraphView extends Canvas {
         this.setWidth(initialWidth);
         this.graph = graph;
         this.context = this.getGraphicsContext2D();
+
+        this.setOnMouseClicked(this::handleMouseClicked);
     }
 
     public GraphicsContext getContext() {
         return this.context;
+    }
+
+    public void handleMouseClicked(MouseEvent event) {
+        double mouseX = event.getX();
+        double mouseY = event.getY();
+
+        System.out.println("Mouse Clicked at: (" + mouseX + ", " + mouseY + ")");
+        graph.addPoint(mouseX, mouseY);
     }
 
     public void drawGraph() {

@@ -16,6 +16,10 @@ public class SpatialGraph {
         this.points.add(p);
     }
 
+    public void addPoint(double x, double y) {
+        this.points.add(new Point(x, y));
+    }
+
     public boolean tryAddPoint(Point p) {
         if (this.containsPoint(p)) return false;
         addPoint(p);

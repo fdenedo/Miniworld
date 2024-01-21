@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -14,7 +14,7 @@ import java.util.List;
 public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) {
-        StackPane root = new StackPane();
+        VBox root = new VBox();
         SpatialGraph graph = SpatialGraph.dummyGraph();
 
         GraphView graphView = new GraphView(600, 600, graph);
@@ -75,9 +75,9 @@ public class Application extends javafx.application.Application {
         buttons.getChildren().add(removeSegmentBtn);
 
         // Add buttons to root
-        root.getChildren().add(buttons);
+        root.getChildren().addAll(buttons);
 
-        Scene scene = new Scene(root, 600, 600, Color.WHITESMOKE);
+        Scene scene = new Scene(root, 600, 630, Color.WHITESMOKE);
 
         stage.setTitle("Graph");
         stage.setScene(scene);
