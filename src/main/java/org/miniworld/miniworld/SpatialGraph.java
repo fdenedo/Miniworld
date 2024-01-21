@@ -59,10 +59,6 @@ public class SpatialGraph {
         }
     }
 
-    public Point getNearestPointTo(Point point, double threshold) {
-        return getNearestPointToCoordinates(point.x, point.y, threshold);
-    }
-
     public Point getNearestPointToCoordinates(double x, double y, double threshold) {
         double closestDistance = Integer.MAX_VALUE;
         Point nearest = null;
