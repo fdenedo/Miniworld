@@ -2,6 +2,7 @@ package org.miniworld.miniworld;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SpatialGraph {
     List<Point> points;
@@ -49,13 +50,29 @@ public class SpatialGraph {
         segments.remove(segment);
     }
 
-    public void removePoint(int pointIndex) {
-        Point removedPoint = points.remove(pointIndex);
+    private void removeSegmentsConnectedToPoint(Point point) {
         List<Segment> segmentsContainingPoint = segments.stream()
-                .filter(s -> s.includesPoint(removedPoint))
+                .filter(s -> s.includesPoint(point))
                 .toList();
         for (Segment segment : segmentsContainingPoint) {
             this.removeSegment(segment);
+        }
+    }
+
+    public void removePoint(int pointIndex) {
+        Point removedPoint = points.remove(pointIndex);
+        removeSegmentsConnectedToPoint(removedPoint);
+    }
+
+    public void removePoint(Point point) {
+        Optional<Point> optionalPoint = points.stream()
+                .filter(p -> p.equals(point))
+                .findFirst();
+
+        if (optionalPoint.isPresent()) {
+            Point removedPoint = optionalPoint.get();
+            points.remove(removedPoint);
+            removeSegmentsConnectedToPoint(removedPoint);
         }
     }
 

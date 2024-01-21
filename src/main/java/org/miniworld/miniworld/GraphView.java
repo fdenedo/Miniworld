@@ -2,6 +2,7 @@ package org.miniworld.miniworld;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
@@ -36,14 +37,19 @@ public class GraphView extends Canvas {
 
     public void handleMouseClicked(MouseEvent event) {
         Point p = new Point(event.getX(), event.getY());
-
         System.out.println("Mouse Clicked at: (" + p.x + ", " + p.y + ")");
 
-        if (this.hovered != null) {
-            this.selected = hovered;
+        if (event.getButton() == MouseButton.SECONDARY) {
+            if (this.hovered != null) {
+                this.graph.removePoint(this.hovered);
+            }
         } else {
-            this.selected = p;
-            graph.addPoint(p);
+            if (this.hovered != null) {
+                this.selected = hovered;
+            } else {
+                this.selected = p;
+                graph.addPoint(p);
+            }
         }
     }
 
