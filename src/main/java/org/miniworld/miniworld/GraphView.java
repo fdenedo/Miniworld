@@ -16,6 +16,7 @@ public class GraphView extends Canvas {
     GraphicsContext context;
 
     Point selected;
+    Point previousSelected;
     Point hovered;
     Point dragging;
 
@@ -51,15 +52,20 @@ public class GraphView extends Canvas {
         if (event.getButton() == MouseButton.SECONDARY) {
             if (this.hovered != null) {
                 this.graph.removePoint(this.hovered);
+                if (this.selected.equals(hovered)) this.selected = null;
                 this.hovered = null;
             }
         } else {
+            this.previousSelected = selected;
             if (this.hovered != null) {
                 this.selected = hovered;
             } else {
                 this.selected = p;
                 this.hovered = p;
                 graph.addPoint(p);
+            }
+            if (previousSelected != null) {
+                graph.tryAddSegment(new Segment(previousSelected, selected));
             }
         }
     }
