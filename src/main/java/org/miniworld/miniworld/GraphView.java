@@ -53,6 +53,8 @@ public class GraphView extends Canvas {
                 this.graph.removePoint(this.hovered);
                 if (this.selected.equals(hovered)) this.selected = null;
                 this.hovered = null;
+            } else {
+                this.selected = null;
             }
         } else {
             this.previousSelected = selected;
