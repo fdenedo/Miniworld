@@ -93,6 +93,11 @@ public class SpatialGraph {
         return nearest;
     }
 
+    public void clear() {
+        points = new ArrayList<>();
+        segments = new ArrayList<>();
+    }
+
     public static SpatialGraph dummyGraph() {
         Point p1 = new Point(100, 100);
         Point p2 = new Point(300, 300);
