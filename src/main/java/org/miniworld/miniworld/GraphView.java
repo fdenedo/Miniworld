@@ -99,7 +99,14 @@ public class GraphView extends Canvas {
         }
     }
 
-    public void drawGraph() {
+    public void draw() {
+        drawGraph();
+        if (this.selected != null) {
+            drawIntendedSegment();
+        }
+    }
+
+    private void drawGraph() {
         for (Segment segment : graph.segments) {
             drawSegment(segment);
         }
@@ -107,6 +114,16 @@ public class GraphView extends Canvas {
         for (Point point : graph.points) {
             drawPoint(point);
         }
+    }
+
+    private void drawIntendedSegment() {
+        context.setStroke(POINT_COLOUR.deriveColor(1.0, 1.0, 1.0, 0.2));
+        context.setLineWidth(2);
+        context.beginPath();
+        context.moveTo(this.selected.x, this.selected.y);
+        Point destination = this.hovered != null ? this.hovered : this.mouse;
+        context.lineTo(destination.x, destination.y);
+        context.stroke();
     }
 
     private void drawSegment(Segment segment) {

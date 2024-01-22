@@ -24,7 +24,7 @@ public class Application extends javafx.application.Application {
             @Override
             public void handle(long l) {
                 gc.clearRect(0, 0, graphView.getWidth(), graphView.getHeight());
-                graphView.drawGraph();
+                graphView.draw();
             }
         };
         animationTimer.start();
