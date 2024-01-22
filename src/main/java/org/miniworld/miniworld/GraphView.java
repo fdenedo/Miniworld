@@ -51,12 +51,13 @@ public class GraphView extends Canvas {
         System.out.println("Mouse Clicked at: (" + this.mouse.x + ", " + this.mouse.y + ")");
 
         if (event.getButton() == MouseButton.SECONDARY) {
-            if (this.hovered != null) {
+            if (this.selected != null) {
+                this.selected = null;
+            }
+            else if (this.hovered != null) {
                 this.graph.removePoint(this.hovered);
                 if (this.selected.equals(hovered)) this.selected = null;
                 this.hovered = null;
-            } else {
-                this.selected = null;
             }
         } else {
             this.previousSelected = selected;
