@@ -17,6 +17,7 @@ public class GraphView extends Canvas {
 
     Point selected;
     Point hovered;
+    Point dragging;
 
     public GraphView(double initialHeight, double initialWidth, SpatialGraph graph) {
         this.setHeight(initialHeight);
@@ -27,8 +28,16 @@ public class GraphView extends Canvas {
         this.selected = null;
         this.hovered = null;
 
+        // Selecting and Removing Points
         this.setOnMouseClicked(this::handleMouseClicked);
+
+        // Hovering Points
         this.setOnMouseMoved(this::handleMouseMoved);
+
+        // Dragging Points
+        this.setOnMousePressed(this::handleMousePressed);
+        this.setOnMouseDragged(this::handleMouseDragging);
+
     }
 
     public GraphicsContext getContext() {
@@ -57,6 +66,19 @@ public class GraphView extends Canvas {
 
     public void handleMouseMoved(MouseEvent event) {
         this.hovered = this.graph.getNearestPointToCoordinates(event.getX(), event.getY(), POINT_RADIUS * 1.2);
+    }
+
+    public void handleMousePressed(MouseEvent event) {
+        if (event.getButton() == MouseButton.PRIMARY) {
+            this.dragging = hovered;
+        }
+    }
+
+    public void handleMouseDragging(MouseEvent event) {
+        if (this.dragging != null) {
+            this.dragging.x = event.getX();
+            this.dragging.y = event.getY();
+        }
     }
 
     public void drawGraph() {
