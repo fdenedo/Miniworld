@@ -15,6 +15,8 @@ public class GraphView extends Canvas {
     SpatialGraph graph;
     GraphicsContext context;
 
+    Point mouse = new Point(0, 0);
+
     Point selected;
     Point previousSelected;
     Point hovered;
@@ -38,6 +40,7 @@ public class GraphView extends Canvas {
         // Dragging Points
         this.setOnMousePressed(this::handleMousePressed);
         this.setOnMouseDragged(this::handleMouseDragging);
+        this.setOnMouseReleased(this::handleMouseReleased);
     }
 
     public GraphicsContext getContext() {
@@ -45,8 +48,7 @@ public class GraphView extends Canvas {
     }
 
     public void handleMouseClicked(MouseEvent event) {
-        Point p = new Point(event.getX(), event.getY());
-        System.out.println("Mouse Clicked at: (" + p.x + ", " + p.y + ")");
+        System.out.println("Mouse Clicked at: (" + this.mouse.x + ", " + this.mouse.y + ")");
 
         if (event.getButton() == MouseButton.SECONDARY) {
             if (this.hovered != null) {
@@ -61,9 +63,10 @@ public class GraphView extends Canvas {
             if (this.hovered != null) {
                 this.selected = hovered;
             } else {
-                this.selected = p;
-                this.hovered = p;
-                graph.addPoint(p);
+                Point newPoint = new Point(this.mouse.x, this.mouse.y);
+                graph.addPoint(newPoint);
+                this.selected = newPoint;
+                this.hovered = newPoint;
             }
             if (previousSelected != null) {
                 graph.tryAddSegment(new Segment(previousSelected, selected));
@@ -72,7 +75,9 @@ public class GraphView extends Canvas {
     }
 
     public void handleMouseMoved(MouseEvent event) {
-        this.hovered = this.graph.getNearestPointToCoordinates(event.getX(), event.getY(), POINT_RADIUS * 1.2);
+        this.mouse.x = event.getX();
+        this.mouse.y = event.getY();
+        this.hovered = this.graph.getNearestPointToCoordinates(this.mouse.x, this.mouse.y, POINT_RADIUS * 1.2);
     }
 
     public void handleMousePressed(MouseEvent event) {
@@ -85,6 +90,12 @@ public class GraphView extends Canvas {
         if (this.dragging != null) {
             this.dragging.x = event.getX();
             this.dragging.y = event.getY();
+        }
+    }
+
+    public void handleMouseReleased(MouseEvent event) {
+        if (event.getButton() == MouseButton.PRIMARY) {
+            this.dragging = null;
         }
     }
 
