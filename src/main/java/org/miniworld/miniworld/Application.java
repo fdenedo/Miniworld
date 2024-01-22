@@ -75,9 +75,7 @@ public class Application extends javafx.application.Application {
         buttons.getChildren().add(removeSegmentBtn);
 
         Button clearAllBtn = new Button("Clear All");
-        clearAllBtn.setOnAction(e -> {
-            graph.clear();
-        });
+        clearAllBtn.setOnAction(e -> graph.clear());
         buttons.getChildren().add(clearAllBtn);
 
         // Add buttons to root

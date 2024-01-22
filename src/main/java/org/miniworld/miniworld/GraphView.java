@@ -38,7 +38,6 @@ public class GraphView extends Canvas {
         // Dragging Points
         this.setOnMousePressed(this::handleMousePressed);
         this.setOnMouseDragged(this::handleMouseDragging);
-
     }
 
     public GraphicsContext getContext() {
