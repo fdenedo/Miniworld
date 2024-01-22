@@ -15,7 +15,7 @@ public class GraphView extends Canvas {
     SpatialGraph graph;
     GraphicsContext context;
 
-    Point mouse = new Point(0, 0);
+    Point mouse;
 
     Point selected;
     Point previousSelected;
@@ -28,6 +28,7 @@ public class GraphView extends Canvas {
         this.graph = graph;
         this.context = this.getGraphicsContext2D();
 
+        this.mouse = new Point(0, 0);
         this.selected = null;
         this.hovered = null;
 
