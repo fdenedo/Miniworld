@@ -22,9 +22,9 @@ public class GraphView extends Canvas {
     Point hovered;
     Point dragging;
 
-    public GraphView(double initialHeight, double initialWidth, SpatialGraph graph) {
-        this.setHeight(initialHeight);
-        this.setWidth(initialWidth);
+    public GraphView(double initialWidth, double initialHeight, SpatialGraph graph) {
+        super(initialWidth, initialHeight);
+
         this.graph = graph;
         this.context = this.getGraphicsContext2D();
 
@@ -51,28 +51,32 @@ public class GraphView extends Canvas {
     public void handleMouseClicked(MouseEvent event) {
         System.out.println("Mouse Clicked at: (" + this.mouse.x + ", " + this.mouse.y + ")");
 
-        if (event.getButton() == MouseButton.SECONDARY) {
-            if (this.selected != null) {
-                this.selected = null;
+        switch (event.getButton()) {
+            case PRIMARY -> {
+                this.previousSelected = selected;
+                if (this.hovered != null) {
+                    this.selected = hovered;
+                } else {
+                    Point newPoint = new Point(this.mouse.x, this.mouse.y);
+                    graph.addPoint(newPoint);
+                    this.selected = newPoint;
+                    this.hovered = newPoint;
+                }
+                if (previousSelected != null) {
+                    graph.tryAddSegment(new Segment(previousSelected, selected));
+                }
             }
-            else if (this.hovered != null) {
-                this.graph.removePoint(this.hovered);
-                if (this.hovered.equals(selected)) this.selected = null;
-                this.hovered = null;
+            case SECONDARY -> {
+                if (this.selected != null) {
+                    this.selected = null;
+                }
+                else if (this.hovered != null) {
+                    this.graph.removePoint(this.hovered);
+                    if (this.hovered.equals(selected)) this.selected = null;
+                    this.hovered = null;
+                }
             }
-        } else {
-            this.previousSelected = selected;
-            if (this.hovered != null) {
-                this.selected = hovered;
-            } else {
-                Point newPoint = new Point(this.mouse.x, this.mouse.y);
-                graph.addPoint(newPoint);
-                this.selected = newPoint;
-                this.hovered = newPoint;
-            }
-            if (previousSelected != null) {
-                graph.tryAddSegment(new Segment(previousSelected, selected));
-            }
+            case NONE, MIDDLE, BACK, FORWARD -> {}
         }
     }
 
@@ -102,10 +106,16 @@ public class GraphView extends Canvas {
     }
 
     public void draw() {
+        drawBackground();
         drawGraph();
         if (this.selected != null) {
             drawIntendedSegment();
         }
+    }
+
+    private void drawBackground() {
+        context.setFill(Color.LIGHTBLUE);
+        context.fillRect(0, 0, getWidth(), getHeight());
     }
 
     private void drawGraph() {
