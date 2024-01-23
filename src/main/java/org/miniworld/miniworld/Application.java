@@ -15,8 +15,19 @@ public class Application extends javafx.application.Application {
         VBox root = new VBox();
         SpatialGraph graph = SpatialGraph.dummyGraph();
 
-        GraphView graphView = new GraphView(600, 600, graph);
+        GraphView graphView = new GraphView(2000, 2000, graph);
         GraphicsContext gc = graphView.getContext();
+
+        Viewport viewport = new Viewport(graphView);
+
+        // FOR DEBUGGING
+        viewport.heightProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("Viewport Height Changed: " + newValue);
+        });
+        viewport.widthProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("Viewport Width Changed: " + newValue);
+        });
+        // END DEBUGGING
 
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
@@ -27,7 +38,7 @@ public class Application extends javafx.application.Application {
         };
         animationTimer.start();
 
-        root.getChildren().add(graphView);
+        root.getChildren().add(viewport);
 
         // BUTTONS
         HBox buttons = new HBox();
