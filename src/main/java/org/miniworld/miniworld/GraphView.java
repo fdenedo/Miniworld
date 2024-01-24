@@ -105,6 +105,12 @@ public class GraphView extends Canvas {
         }
     }
 
+    public void clear() {
+        this.graph.clear();
+        this.selected = null;
+        this.hovered = null;
+    }
+
     public void draw() {
         drawBackground();
         drawGraph();

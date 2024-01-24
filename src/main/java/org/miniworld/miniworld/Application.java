@@ -44,7 +44,7 @@ public class Application extends javafx.application.Application {
         HBox buttons = new HBox();
 
         Button clearAllBtn = new Button("Clear All");
-        clearAllBtn.setOnAction(e -> graph.clear());
+        clearAllBtn.setOnAction(e -> graphView.clear());
         buttons.getChildren().add(clearAllBtn);
 
         // Add buttons to root
