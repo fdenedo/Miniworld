@@ -51,6 +51,14 @@ public class Viewport extends Pane {
         return new Point(canvasCenterLocal.getX(), canvasCenterLocal.getY());
     }
 
+    public double getWidthOfCanvasInViewport() {
+        return canvas.getBoundsInParent().getWidth() * canvas.getScaleX();
+    }
+
+    public double getHeightOfCanvasInViewport() {
+        return canvas.getBoundsInParent().getHeight() * canvas.getScaleY();
+    }
+
     public void handleScroll(ScrollEvent event) {
         double scaleDelta = (event.getDeltaY() < 0 ? -1.0 : 1.0) * ZOOM_STEP_AMOUNT;
 
@@ -123,10 +131,7 @@ public class Viewport extends Pane {
         double currentTranslateX = canvas.getTranslateX();
         double currentTranslateY = canvas.getTranslateY();
 
-        double newTranslateX = currentTranslateX + deltaX;
-        double newTranslateY = currentTranslateY + deltaY;
-
-        canvas.setTranslateX(newTranslateX);
-        canvas.setTranslateY(newTranslateY);
+        if (getWidthOfCanvasInViewport() > this.getWidth()) canvas.setTranslateX(currentTranslateX + deltaX);
+        if (getHeightOfCanvasInViewport() > this.getHeight()) canvas.setTranslateY(currentTranslateY + deltaY);
     }
 }
