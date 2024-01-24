@@ -2,6 +2,7 @@ package org.miniworld.miniworld;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SpatialGraph {
     List<Point> points;
@@ -49,14 +50,52 @@ public class SpatialGraph {
         segments.remove(segment);
     }
 
-    public void removePoint(int pointIndex) {
-        Point removedPoint = points.remove(pointIndex);
+    private void removeSegmentsConnectedToPoint(Point point) {
         List<Segment> segmentsContainingPoint = segments.stream()
-                .filter(s -> s.includesPoint(removedPoint))
+                .filter(s -> s.includesPoint(point))
                 .toList();
         for (Segment segment : segmentsContainingPoint) {
             this.removeSegment(segment);
         }
+    }
+
+    public void removePoint(int pointIndex) {
+        Point removedPoint = points.remove(pointIndex);
+        removeSegmentsConnectedToPoint(removedPoint);
+    }
+
+    public void removePoint(Point point) {
+        Optional<Point> optionalPoint = points.stream()
+                .filter(p -> p.equals(point))
+                .findFirst();
+
+        if (optionalPoint.isPresent()) {
+            Point removedPoint = optionalPoint.get();
+            points.remove(removedPoint);
+            removeSegmentsConnectedToPoint(removedPoint);
+        }
+    }
+
+    public Point getNearestPointToCoordinates(double x, double y, double threshold) {
+        double closestDistance = Integer.MAX_VALUE;
+        Point nearest = null;
+
+        for (Point p : this.points) {
+            // Feels like an unnecessary optimisation
+            if (Math.abs(x - p.x) > closestDistance || Math.abs(y - p.y) > closestDistance) continue;
+            double newDistance = Math.hypot(x - p.x, y - p.y);
+            if (newDistance < threshold && newDistance < closestDistance) {
+                nearest = p;
+                closestDistance = newDistance;
+            }
+        }
+
+        return nearest;
+    }
+
+    public void clear() {
+        points = new ArrayList<>();
+        segments = new ArrayList<>();
     }
 
     public static SpatialGraph dummyGraph() {
