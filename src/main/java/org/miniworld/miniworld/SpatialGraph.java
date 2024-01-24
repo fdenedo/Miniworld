@@ -59,11 +59,6 @@ public class SpatialGraph {
         }
     }
 
-    public void removePoint(int pointIndex) {
-        Point removedPoint = points.remove(pointIndex);
-        removeSegmentsConnectedToPoint(removedPoint);
-    }
-
     public void removePoint(Point point) {
         Optional<Point> optionalPoint = points.stream()
                 .filter(p -> p.equals(point))
