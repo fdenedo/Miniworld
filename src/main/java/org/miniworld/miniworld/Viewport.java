@@ -57,9 +57,6 @@ public class Viewport extends Pane {
         this.zoom -= scaleDelta;
         this.zoom = Math.max(MAX_ZOOM_IN, Math.min(this.zoom, MAX_ZOOM_OUT));
 
-        double pivotX = this.getWidth() / 2;
-        double pivotY = this.getHeight() / 2;
-
         applyZoom();
         event.consume();
         System.out.println("Canvas Position: " + getCanvasTopLeftPosition());

@@ -21,12 +21,10 @@ public class Application extends javafx.application.Application {
         Viewport viewport = new Viewport(graphView);
 
         // FOR DEBUGGING
-        viewport.heightProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("Viewport Height Changed: " + newValue);
-        });
-        viewport.widthProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("Viewport Width Changed: " + newValue);
-        });
+        viewport.heightProperty().addListener((observable, oldValue, newValue)
+                -> System.out.println("Viewport Height Changed: " + newValue));
+        viewport.widthProperty().addListener((observable, oldValue, newValue)
+                -> System.out.println("Viewport Width Changed: " + newValue));
         // END DEBUGGING
 
         AnimationTimer animationTimer = new AnimationTimer() {
