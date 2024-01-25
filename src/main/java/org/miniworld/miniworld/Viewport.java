@@ -51,12 +51,12 @@ public class Viewport extends Pane {
         return new Point(canvasCenterLocal.getX(), canvasCenterLocal.getY());
     }
 
-    public double getWidthOfCanvasInViewport() {
-        return canvas.getBoundsInParent().getWidth() * canvas.getScaleX();
+    public double getScaledWidthOfCanvas() {
+        return canvas.getWidth() * canvas.getScaleX();
     }
 
-    public double getHeightOfCanvasInViewport() {
-        return canvas.getBoundsInParent().getHeight() * canvas.getScaleY();
+    public double getScaledHeightOfCanvas() {
+        return canvas.getHeight() * canvas.getScaleY();
     }
 
     public void handleScroll(ScrollEvent event) {
@@ -131,7 +131,9 @@ public class Viewport extends Pane {
         double currentTranslateX = canvas.getTranslateX();
         double currentTranslateY = canvas.getTranslateY();
 
-        if (getWidthOfCanvasInViewport() > this.getWidth()) canvas.setTranslateX(currentTranslateX + deltaX);
-        if (getHeightOfCanvasInViewport() > this.getHeight()) canvas.setTranslateY(currentTranslateY + deltaY);
+        // TODO: Set panning limit so that the user cannot pan further than the screen
+
+        if (getScaledWidthOfCanvas() > this.getWidth()) canvas.setTranslateX(currentTranslateX + deltaX);
+        if (getScaledHeightOfCanvas() > this.getHeight()) canvas.setTranslateY(currentTranslateY + deltaY);
     }
 }
