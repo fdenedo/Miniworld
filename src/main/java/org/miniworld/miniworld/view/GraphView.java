@@ -1,12 +1,13 @@
-package org.miniworld.miniworld;
+package org.miniworld.miniworld.view;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-
-import java.util.Arrays;
+import org.miniworld.miniworld.model.Point;
+import org.miniworld.miniworld.model.Segment;
+import org.miniworld.miniworld.model.SpatialGraph;
 
 public class GraphView extends Canvas {
     private static final int POINT_DIAMETER = 14;
@@ -17,7 +18,7 @@ public class GraphView extends Canvas {
     SpatialGraph graph;
     GraphicsContext context;
 
-    Point mouse;
+    double mouseX, mouseY;
 
     Point selected;
     Point previousSelected;
@@ -30,7 +31,6 @@ public class GraphView extends Canvas {
         this.graph = graph;
         this.context = this.getGraphicsContext2D();
 
-        this.mouse = new Point(0, 0);
         this.selected = null;
         this.hovered = null;
 
@@ -51,7 +51,7 @@ public class GraphView extends Canvas {
     }
 
     public void handleMouseClicked(MouseEvent event) {
-        System.out.println("Mouse Clicked at: (" + this.mouse.x + ", " + this.mouse.y + ")");
+        System.out.println("Mouse Clicked at: (" + this.mouseX + ", " + this.mouseY + ")");
 
         switch (event.getButton()) {
             case PRIMARY -> {
@@ -59,7 +59,7 @@ public class GraphView extends Canvas {
                 if (this.hovered != null) {
                     this.selected = hovered;
                 } else {
-                    Point newPoint = new Point(this.mouse.x, this.mouse.y);
+                    Point newPoint = new Point(this.mouseX, this.mouseY);
                     graph.addPoint(newPoint);
                     this.selected = newPoint;
                     this.hovered = newPoint;
@@ -83,9 +83,9 @@ public class GraphView extends Canvas {
     }
 
     public void handleMouseMoved(MouseEvent event) {
-        this.mouse.x = event.getX();
-        this.mouse.y = event.getY();
-        this.hovered = this.graph.getNearestPointToCoordinates(this.mouse.x, this.mouse.y, POINT_RADIUS * 1.2);
+        this.mouseX = event.getX();
+        this.mouseY = event.getY();
+        this.hovered = this.graph.getNearestPointToCoordinates(this.mouseX, this.mouseY, POINT_RADIUS * 1.2);
     }
 
     public void handleMousePressed(MouseEvent event) {
@@ -96,8 +96,8 @@ public class GraphView extends Canvas {
 
     public void handleMouseDragging(MouseEvent event) {
         if (this.dragging != null) {
-            this.dragging.x = event.getX();
-            this.dragging.y = event.getY();
+            this.dragging.setX(event.getX());
+            this.dragging.setY(event.getY());
         }
     }
 
@@ -122,10 +122,10 @@ public class GraphView extends Canvas {
     }
 
     private void drawGraph() {
-        for (Segment segment : graph.segments) {
+        for (Segment segment : graph.getSegments()) {
             drawSegment(segment);
         }
-        for (Point point : graph.points) {
+        for (Point point : graph.getPoints()) {
             drawPoint(point);
         }
     }
@@ -134,9 +134,9 @@ public class GraphView extends Canvas {
         context.setStroke(POINT_COLOUR.deriveColor(1.0, 1.0, 1.0, 0.2));
         context.setLineWidth(2);
         context.beginPath();
-        context.moveTo(this.selected.x, this.selected.y);
-        Point destination = this.hovered != null ? this.hovered : this.mouse;
-        context.lineTo(destination.x, destination.y);
+        context.moveTo(this.selected.getX(), this.selected.getY());
+        Point destination = this.hovered != null ? this.hovered : new Point(mouseX, mouseY);
+        context.lineTo(destination.getX(), destination.getY());
         context.stroke();
     }
 
@@ -144,21 +144,21 @@ public class GraphView extends Canvas {
         context.setStroke(POINT_COLOUR);
         context.setLineWidth(2);
         context.beginPath();
-        context.moveTo(segment.p1.x, segment.p1.y);
-        context.lineTo(segment.p2.x, segment.p2.y);
+        context.moveTo(segment.getP1().getX(), segment.getP1().getY());
+        context.lineTo(segment.getP2().getX(), segment.getP2().getY());
         context.stroke();
     }
 
     private void drawPoint(Point point) {
         context.setFill(POINT_COLOUR);
-        context.fillOval(point.x - POINT_RADIUS, point.y - POINT_RADIUS, POINT_DIAMETER, POINT_DIAMETER);
+        context.fillOval(point.getX() - POINT_RADIUS, point.getY() - POINT_RADIUS, POINT_DIAMETER, POINT_DIAMETER);
         if (this.selected == point) {
             double selectedLineRatio = 0.6;
             context.setStroke(POINT_SELECTED_COLOUR);
             context.setLineWidth(2);
             context.strokeOval(
-                    point.x - (POINT_RADIUS * selectedLineRatio),
-                    point.y - (POINT_RADIUS * selectedLineRatio),
+                    point.getX() - (POINT_RADIUS * selectedLineRatio),
+                    point.getY() - (POINT_RADIUS * selectedLineRatio),
                     POINT_DIAMETER * selectedLineRatio,
                     POINT_DIAMETER * selectedLineRatio
             );
@@ -167,8 +167,8 @@ public class GraphView extends Canvas {
             context.setStroke(POINT_SELECTED_COLOUR);
             context.setLineWidth(3);
             context.strokeOval(
-                    point.x - (POINT_RADIUS * hoveredRatio),
-                    point.y - (POINT_RADIUS * hoveredRatio),
+                    point.getX() - (POINT_RADIUS * hoveredRatio),
+                    point.getY() - (POINT_RADIUS * hoveredRatio),
                     POINT_DIAMETER * hoveredRatio,
                     POINT_DIAMETER * hoveredRatio
             );

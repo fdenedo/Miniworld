@@ -1,6 +1,9 @@
-package org.miniworld.miniworld;
+package org.miniworld.miniworld.view;
 
 import javafx.scene.canvas.GraphicsContext;
+import org.miniworld.miniworld.model.Point;
+import org.miniworld.miniworld.model.Segment;
+import org.miniworld.miniworld.view.Polygon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +23,8 @@ public class Envelope {
     }
 
     public Polygon createPolygon(int roundness) {
-        Point p1 = segment.p1;
-        Point p2 = segment.p2;
+        Point p1 = segment.getP1();
+        Point p2 = segment.getP2();
 
         double radius = thickness / 2;
 

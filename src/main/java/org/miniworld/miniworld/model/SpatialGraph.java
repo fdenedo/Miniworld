@@ -1,4 +1,4 @@
-package org.miniworld.miniworld;
+package org.miniworld.miniworld.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,22 @@ public class SpatialGraph {
     public SpatialGraph() {
         points = new ArrayList<>();
         segments = new ArrayList<>();
+    }
+
+    public List<Point> getPoints() {
+        return points;
+    }
+
+    public List<Segment> getSegments() {
+        return segments;
+    }
+
+    public void setPoints(List<Point> points) {
+        this.points = points;
+    }
+
+    public void setSegments(List<Segment> segments) {
+        this.segments = segments;
     }
 
     public void addPoint(Point p) {

@@ -1,7 +1,8 @@
-package org.miniworld.miniworld;
+package org.miniworld.miniworld.view;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import org.miniworld.miniworld.model.Point;
 
 public class Polygon {
     Point[] points;
@@ -15,11 +16,11 @@ public class Polygon {
         context.setFill(Color.color(0.2, 0.2, 1.0, 0.5));
         context.setLineWidth(2);
         context.beginPath();
-        context.moveTo(points[0].x, points[0].y);
+        context.moveTo(points[0].getX(), points[0].getY());
 
         for (int i = 1; i <= points.length; i++) {
             int index = i % points.length;
-            context.lineTo(points[index].x, points[index].y);
+            context.lineTo(points[index].getX(), points[index].getY());
         }
 
         context.stroke();

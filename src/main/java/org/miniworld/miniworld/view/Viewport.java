@@ -1,4 +1,4 @@
-package org.miniworld.miniworld;
+package org.miniworld.miniworld.view;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
@@ -7,6 +7,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.Pane;
+import org.miniworld.miniworld.model.Point;
 
 public class Viewport extends Pane {
     private static final double MAX_ZOOM_IN = 1;
@@ -16,13 +17,12 @@ public class Viewport extends Pane {
     Canvas canvas;
     double zoom;
     boolean panning;
-    Point mouseAtPanningStart;
+    double mouseX, mouseY;
 
     public Viewport(Canvas canvas) {
         this.canvas = canvas;
         this.zoom = 1;
         this.panning = false;
-        this.mouseAtPanningStart = new Point(0, 0);
 
         this.getChildren().add(canvas);
 
@@ -84,21 +84,21 @@ public class Viewport extends Pane {
         if (event.getButton() == MouseButton.MIDDLE) {
             this.panning = true;
             Point2D localCoords = sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
-            this.mouseAtPanningStart.x = localCoords.getX();
-            this.mouseAtPanningStart.y = localCoords.getY();
+            this.mouseX = localCoords.getX();
+            this.mouseY = localCoords.getY();
         }
     }
 
     public void handleMouseDragging(MouseEvent event) {
         if (this.panning) {
             Point2D localCoords = sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
-            double deltaX = localCoords.getX() - this.mouseAtPanningStart.x;
-            double deltaY = localCoords.getY() - this.mouseAtPanningStart.y;
+            double deltaX = localCoords.getX() - this.mouseX;
+            double deltaY = localCoords.getY() - this.mouseY;
 
             applyPanning(deltaX, deltaY);
 
-            this.mouseAtPanningStart.x = localCoords.getX();
-            this.mouseAtPanningStart.y = localCoords.getY();
+            this.mouseX = localCoords.getX();
+            this.mouseY = localCoords.getY();
         }
     }
 
@@ -112,9 +112,11 @@ public class Viewport extends Pane {
         double viewportCentreX = getWidth() / 2;
         double viewportCentreY = getHeight() / 2;
         Point canvasCentre = getCanvasCenterPosition();
+        double canvasX = canvasCentre.getX();
+        double canvasY = canvasCentre.getY();
 
-        double offsetX = canvasCentre.x - viewportCentreX;
-        double offsetY = canvasCentre.y - viewportCentreY;
+        double offsetX = canvasX - viewportCentreX;
+        double offsetY = canvasY - viewportCentreY;
 
         canvas.setTranslateX(canvas.getTranslateX() - offsetX);
         canvas.setTranslateY(canvas.getTranslateY() - offsetY);

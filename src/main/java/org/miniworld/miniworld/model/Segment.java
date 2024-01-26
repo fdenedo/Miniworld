@@ -1,4 +1,4 @@
-package org.miniworld.miniworld;
+package org.miniworld.miniworld.model;
 
 import java.util.Objects;
 
@@ -8,6 +8,14 @@ public class Segment {
     public Segment(Point p1, Point p2) {
         this.p1 = p1;
         this.p2 = p2;
+    }
+
+    public Point getP1() {
+        return this.p1;
+    }
+
+    public Point getP2() {
+        return this.p2;
     }
 
     public boolean includesPoint(Point p) {

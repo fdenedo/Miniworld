@@ -1,8 +1,9 @@
-package org.miniworld.miniworld;
+package org.miniworld.miniworld.model;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import org.miniworld.miniworld.view.Envelope;
 
 import java.util.ArrayList;
 import java.util.List;
