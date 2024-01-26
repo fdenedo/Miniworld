@@ -4,15 +4,13 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class Polygon {
-    GraphicsContext context;
     Point[] points;
 
-    public Polygon(GraphicsContext context, Point[] points) {
-        this.context = context;
+    public Polygon(Point[] points) {
         this.points = points;
     }
 
-    public void draw() {
+    public void draw(GraphicsContext context) {
         context.setStroke(Color.BLUE);
         context.setFill(Color.color(0.2, 0.2, 1.0, 0.5));
         context.setLineWidth(2);
