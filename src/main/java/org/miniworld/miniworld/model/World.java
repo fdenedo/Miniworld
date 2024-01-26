@@ -4,6 +4,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import org.miniworld.miniworld.view.Envelope;
+import org.miniworld.miniworld.view.Polygon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ public class World {
     int roundness;
     List<Envelope> envelopes;
     Canvas worldCanvas;
+    List<Point> intersections;
 
     public World(Canvas canvas, SpatialGraph graph, double roadWidth, int roundness) {
         this.worldCanvas = canvas;
@@ -31,6 +33,11 @@ public class World {
         for (Segment segment : this.graph.segments) {
             this.envelopes.add(new Envelope(segment, roadWidth, roundness));
         }
+
+        this.intersections = Polygon.breakSegments(
+                this.envelopes.get(0).getPolygon(),
+                this.envelopes.get(1).getPolygon()
+        );
     }
 
     private void drawBackground(GraphicsContext context) {

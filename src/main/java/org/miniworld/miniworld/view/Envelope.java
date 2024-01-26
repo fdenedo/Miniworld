@@ -22,6 +22,10 @@ public class Envelope {
         this.polygon = createPolygon(round);
     }
 
+    public Polygon getPolygon() {
+        return this.polygon;
+    }
+
     public Polygon createPolygon(int roundness) {
         Point p1 = segment.getP1();
         Point p2 = segment.getP2();
