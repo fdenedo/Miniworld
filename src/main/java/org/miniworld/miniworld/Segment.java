@@ -14,6 +14,10 @@ public class Segment {
         return this.p1.equals(p) || this.p2.equals(p);
     }
 
+    public double angle() {
+        return Math.atan2(p2.y - p1.y, p2.x - p1.x);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
