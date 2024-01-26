@@ -6,6 +6,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
+import java.util.Arrays;
+
 public class GraphView extends Canvas {
     private static final int POINT_DIAMETER = 14;
     private static final int POINT_RADIUS = POINT_DIAMETER / 2;
@@ -125,10 +127,13 @@ public class GraphView extends Canvas {
     }
 
     private void drawGraph() {
+        if (!graph.points.isEmpty()) {
+            Polygon poly = new Polygon(context, graph.points.toArray(new Point[0]));
+            poly.draw();
+        }
         for (Segment segment : graph.segments) {
             drawSegment(segment);
         }
-
         for (Point point : graph.points) {
             drawPoint(point);
         }
