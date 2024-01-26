@@ -94,18 +94,21 @@ public class SpatialGraph {
     }
 
     public static SpatialGraph dummyGraph() {
-        Point p1 = new Point(100, 100);
-        Point p2 = new Point(300, 300);
-        Point p3 = new Point(300, 400);
+        Point p1 = new Point(900, 900);
+        Point p2 = new Point(1100, 1000);
+        Point p3 = new Point(1200, 1000);
+        Point p4 = new Point(1200, 920);
 
 
         SpatialGraph g = new SpatialGraph();
         g.points.add(p1);
         g.points.add(p2);
         g.points.add(p3);
+        g.points.add(p4);
 
         g.addSegment(p1, p2);
         g.addSegment(p2, p3);
+        g.addSegment(p3, p4);
 
         return g;
     }

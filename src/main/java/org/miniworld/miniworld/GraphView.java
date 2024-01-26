@@ -114,23 +114,14 @@ public class GraphView extends Canvas {
     }
 
     public void draw() {
-        drawBackground();
+//        drawBackground();
         drawGraph();
         if (this.selected != null) {
             drawIntendedSegment();
         }
     }
 
-    private void drawBackground() {
-        context.setFill(Color.LIGHTBLUE);
-        context.fillRect(0, 0, getWidth(), getHeight());
-    }
-
     private void drawGraph() {
-        if (!graph.points.isEmpty()) {
-            Polygon poly = new Polygon(context, graph.points.toArray(new Point[0]));
-            poly.draw();
-        }
         for (Segment segment : graph.segments) {
             drawSegment(segment);
         }
