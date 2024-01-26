@@ -10,6 +10,13 @@ public class Point {
         this.y = y;
     }
 
+    public Point translate(double angle, double radius) {
+        return new Point(
+                this.x + Math.cos(angle) * radius,
+                this.y + Math.sin(angle) * radius
+        );
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
