@@ -1,9 +1,9 @@
 package org.miniworld.miniworld.view;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import org.miniworld.miniworld.model.Point;
 import org.miniworld.miniworld.model.Segment;
-import org.miniworld.miniworld.view.Polygon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +50,6 @@ public class Envelope {
     }
 
     public void draw(GraphicsContext context) {
-        this.polygon.draw(context);
+        this.polygon.draw(context, Color.color(0.7, 0.7, 0.7), 12);
     }
 }

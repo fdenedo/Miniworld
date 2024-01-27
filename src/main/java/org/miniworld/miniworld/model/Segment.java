@@ -67,6 +67,13 @@ public class Segment {
         return Math.atan2(p2.y - p1.y, p2.x - p1.x);
     }
 
+    public Point midpoint() {
+        return new Point(
+                (p2.x + p1.x) / 2,
+                (p2.y + p1.y) / 2
+        );
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -16,6 +16,7 @@ public class World {
     int roundness;
     List<Envelope> envelopes;
     Canvas worldCanvas;
+    List<Segment> roadBorders;
 
     public World(Canvas canvas, SpatialGraph graph, double roadWidth, int roundness) {
         this.worldCanvas = canvas;
@@ -24,6 +25,7 @@ public class World {
         this.roundness = roundness;
 
         this.envelopes = new ArrayList<>();
+        this.roadBorders = new ArrayList<>();
     }
 
     public void generate() {
@@ -33,10 +35,7 @@ public class World {
             this.envelopes.add(new Envelope(segment, roadWidth, roundness));
         }
 
-        Polygon.breakSegments(
-                this.envelopes.get(0).getPolygon(),
-                this.envelopes.get(1).getPolygon()
-        );
+        this.roadBorders = Polygon.union(this.envelopes.stream().map(Envelope::getPolygon).toList());
     }
 
     private void drawBackground(GraphicsContext context) {
@@ -44,11 +43,22 @@ public class World {
         context.fillRect(0, 0, worldCanvas.getWidth(), worldCanvas.getHeight());
     }
 
+    private void drawSegment(GraphicsContext context, Segment segment) {
+        context.setStroke(Color.WHITE);
+        context.setLineWidth(2);
+        context.beginPath();
+        context.moveTo(segment.getP1().getX(), segment.getP1().getY());
+        context.lineTo(segment.getP2().getX(), segment.getP2().getY());
+        context.stroke();
+    }
+
     public void draw(GraphicsContext context) {
         drawBackground(context);
         for (Envelope envelope : this.envelopes) {
             envelope.draw(context);
-//            envelope.getPolygon().drawAlternate(context); // ALTERNATE FOR DEBUGGING ONLY
+        }
+        for (Segment border : this.roadBorders) {
+            drawSegment(context, border);
         }
     }
 }
