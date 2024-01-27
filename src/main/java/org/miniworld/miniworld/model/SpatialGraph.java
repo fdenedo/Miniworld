@@ -68,7 +68,7 @@ public class SpatialGraph {
 
     private void removeSegmentsConnectedToPoint(Point point) {
         List<Segment> segmentsContainingPoint = segments.stream()
-                .filter(s -> s.includesPoint(point))
+                .filter(s -> s.includesEndpoint(point))
                 .toList();
         for (Segment segment : segmentsContainingPoint) {
             this.removeSegment(segment);

@@ -11,6 +11,22 @@ public class Segment {
         this.p2 = p2;
     }
 
+    public Point getP1() {
+        return this.p1;
+    }
+
+    public Point getP2() {
+        return this.p2;
+    }
+
+    public void setP1(Point p) {
+        this.p1 = p;
+    }
+
+    public void setP2(Point p) {
+        this.p2 = p;
+    }
+
     public static Optional<Point> getIntersection(Segment segment1, Segment segment2) {
         double x1 = segment1.p1.x;
         double y1 = segment1.p1.y;
@@ -43,15 +59,7 @@ public class Segment {
         }
     }
 
-    public Point getP1() {
-        return this.p1;
-    }
-
-    public Point getP2() {
-        return this.p2;
-    }
-
-    public boolean includesPoint(Point p) {
+    public boolean includesEndpoint(Point p) {
         return this.p1.equals(p) || this.p2.equals(p);
     }
 
@@ -64,12 +72,17 @@ public class Segment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Segment segment = (Segment) o;
-        return this.includesPoint(segment.p1) && this.includesPoint(segment.p2);
+        return this.includesEndpoint(segment.p1) && this.includesEndpoint(segment.p2);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(p1, p2);
+    }
+
+    @Override
+    public String toString() {
+        return this.p1.toString() + " -> " + this.p2.toString();
     }
 
     private boolean isPointWithinSegment(Point point) {

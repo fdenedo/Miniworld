@@ -16,7 +16,6 @@ public class World {
     int roundness;
     List<Envelope> envelopes;
     Canvas worldCanvas;
-    List<Point> intersections;
 
     public World(Canvas canvas, SpatialGraph graph, double roadWidth, int roundness) {
         this.worldCanvas = canvas;
@@ -34,7 +33,7 @@ public class World {
             this.envelopes.add(new Envelope(segment, roadWidth, roundness));
         }
 
-        this.intersections = Polygon.breakSegments(
+        Polygon.breakSegments(
                 this.envelopes.get(0).getPolygon(),
                 this.envelopes.get(1).getPolygon()
         );
@@ -49,6 +48,7 @@ public class World {
         drawBackground(context);
         for (Envelope envelope : this.envelopes) {
             envelope.draw(context);
+//            envelope.getPolygon().drawAlternate(context); // ALTERNATE FOR DEBUGGING ONLY
         }
     }
 }

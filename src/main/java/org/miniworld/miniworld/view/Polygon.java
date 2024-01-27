@@ -21,18 +21,28 @@ public class Polygon {
         }
     }
 
-    public static List<Point> breakSegments(Polygon polygon1, Polygon polygon2) {
+    public static void breakSegments(Polygon polygon1, Polygon polygon2) {
         List<Segment> edges1 = polygon1.edges;
         List<Segment> edges2 = polygon2.edges;
-        List<Point> intersections = new ArrayList<>();
+
         for (int i = 0; i < edges1.size(); i++) {
             for (int j = 0; j < edges2.size(); j++) {
-                Optional<Point> intersection = Segment.getIntersection(edges1.get(i), edges2.get(j));
-                intersection.ifPresent(point -> intersections.add(new Point(point.getX(), point.getY())));
+                Segment e1 = edges1.get(i);
+                Segment e2 = edges2.get(j);
+                Optional<Point> intersection = Segment.getIntersection(e1, e2);
+
+                if (intersection.isEmpty()) continue;
+                Point p = intersection.get();
+                if (e1.includesEndpoint(p) || e2.includesEndpoint(p)) continue;
+
+                Point e1PrevP2 = e1.getP2();
+                e1.setP2(p);
+                edges1.add(i + 1, new Segment(p, e1PrevP2));
+                Point e2PrevP2 = e1.getP2();
+                e2.setP2(p);
+                edges2.add(j + 1, new Segment(p, e2PrevP2));
             }
         }
-
-        return intersections;
     }
 
     public void draw(GraphicsContext context) {
