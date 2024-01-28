@@ -76,7 +76,7 @@ public class Polygon {
         return segmentsToKeep;
     }
 
-    private boolean containsEdge(Segment edge) {
+    public boolean containsEdge(Segment edge) {
         return this.containsPoint(edge.midpoint());
     }
 

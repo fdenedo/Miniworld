@@ -81,6 +81,10 @@ public class Envelope {
     public static void breakAll(List<Envelope> envelopes) {
         for (int i = 0; i < envelopes.size() - 1; i++) {
             for (int j = i + 1; j < envelopes.size(); j++) {
+                Envelope e1 = envelopes.get(i);
+                Envelope e2 = envelopes.get(j);
+                // If the bounding boxes don't touch they can't possibly interact
+                if (!e1.boundingBox.intersectsBoundingBox(e2.boundingBox)) continue;
                 breakSegments(envelopes.get(i), envelopes.get(j));
             }
         }
