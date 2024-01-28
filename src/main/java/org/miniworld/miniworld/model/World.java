@@ -35,7 +35,7 @@ public class World {
             this.envelopes.add(new Envelope(segment, roadWidth, roundness));
         }
 
-        this.roadBorders = Polygon.union(this.envelopes.stream().map(Envelope::getPolygon).toList());
+        this.roadBorders = Envelope.union(this.envelopes.stream().toList());
     }
 
     private void drawBackground(GraphicsContext context) {
