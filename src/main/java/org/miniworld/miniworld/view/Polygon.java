@@ -123,4 +123,13 @@ public class Polygon {
         context.stroke();
         context.fill();
     }
+
+    public boolean intersectsPolygon(Polygon p) {
+        for (Segment e1 : this.edges) {
+            for (Segment e2 : p.edges) {
+                if (Segment.getIntersection(e1, e2).isPresent()) return true;
+            }
+        }
+        return false;
+    }
 }

@@ -116,6 +116,10 @@ public class Envelope {
         this.polygon.draw(context, Color.color(0.7, 0.7, 0.7), 12);
     }
 
+    public void drawGhost(GraphicsContext context) {
+        this.polygon.draw(context, Color.color(0.1, 0.1, 0.8, 0.5), 1);
+    }
+
     private BoundingBox calculateBoundingBox() {
         double minX = Math.min(segment.getP1().getX(), segment.getP2().getX()) - thickness;
         double minY = Math.min(segment.getP1().getY(), segment.getP2().getY()) - thickness;

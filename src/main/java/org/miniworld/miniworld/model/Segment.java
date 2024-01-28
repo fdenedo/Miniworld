@@ -3,6 +3,9 @@ package org.miniworld.miniworld.model;
 import java.util.Objects;
 import java.util.Optional;
 
+import static org.miniworld.miniworld.utils.MathUtils.normalise;
+import static org.miniworld.miniworld.utils.MathUtils.subtract;
+
 public class Segment {
     Point p1, p2;
 
@@ -40,7 +43,9 @@ public class Segment {
 
         // Check for parallel lines
         double denominator = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-        if (denominator == 0) {
+        double eps = 0.001;
+
+        if (Math.abs(denominator) < eps) {
             // Lines are parallel
             return Optional.empty();
         }
@@ -67,11 +72,19 @@ public class Segment {
         return Math.atan2(p2.y - p1.y, p2.x - p1.x);
     }
 
+    public Point directionVector() {
+        return normalise(subtract(p2, p1));
+    }
+
     public Point midpoint() {
         return new Point(
                 (p2.x + p1.x) / 2,
                 (p2.y + p1.y) / 2
         );
+    }
+
+    public double length() {
+        return Math.hypot(Math.abs(p2.x - p1.x), Math.abs(p2.y - p1.y));
     }
 
     @Override
