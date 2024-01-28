@@ -22,4 +22,10 @@ public class MathUtils {
     public static double magnitude(Point p) {
         return Math.hypot(p.getX(), p.getY());
     }
+
+    public static double lerp(double A, double B, double t) {
+        return A + (B - A) * t;
+    }
+
+
 }
