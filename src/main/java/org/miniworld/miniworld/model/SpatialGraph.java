@@ -1,7 +1,9 @@
 package org.miniworld.miniworld.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class SpatialGraph {
@@ -107,6 +109,44 @@ public class SpatialGraph {
     public void clear() {
         points = new ArrayList<>();
         segments = new ArrayList<>();
+    }
+
+    public SpatialGraph deepCopy() {
+        SpatialGraph copy = new SpatialGraph();
+
+        List<Point> copiedPoints = new ArrayList<>();
+        for (Point point : this.points) {
+            copiedPoints.add(new Point(point.x, point.y));
+        }
+        copy.points = copiedPoints;
+
+        List<Segment> copiedSegments = new ArrayList<>();
+        for (Segment segment : this.segments) {
+            Point p1 = copiedPoints.get(this.points.indexOf(segment.p1));
+            Point p2 = copiedPoints.get(this.points.indexOf(segment.p2));
+            copiedSegments.add(new Segment(p1, p2));
+        }
+        copy.segments = copiedSegments;
+
+        return copy;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SpatialGraph that = (SpatialGraph) o;
+
+        if (new HashSet<>(points).equals(new HashSet<>(that.points))) {
+            return new HashSet<>(segments).equals(new HashSet<>(that.segments));
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(points, segments);
     }
 
     public static SpatialGraph dummyGraph() {

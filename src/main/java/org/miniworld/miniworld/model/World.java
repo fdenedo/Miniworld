@@ -4,13 +4,13 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import org.miniworld.miniworld.view.Envelope;
-import org.miniworld.miniworld.view.Polygon;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class World {
 
+    SpatialGraph previousGraph;
     SpatialGraph graph;
     double roadWidth;
     int roundness;
@@ -29,6 +29,8 @@ public class World {
     }
 
     public void generate() {
+        if (graph.equals(previousGraph)) return;
+
         this.envelopes = new ArrayList<>();
 
         for (Segment segment : this.graph.segments) {
@@ -36,6 +38,7 @@ public class World {
         }
 
         this.roadBorders = Envelope.union(this.envelopes.stream().toList());
+        this.previousGraph = graph.deepCopy();
     }
 
     private void drawBackground(GraphicsContext context) {
