@@ -34,4 +34,8 @@ public class MathUtils {
     public static double lerp(double A, double B, double t) {
         return A + (B - A) * t;
     }
+
+    public static Point lerp2D(Point A, Point B, double t) {
+        return new Point(lerp(A.getX(), B.getX(), t), lerp(A.getY(), B.getY(), t));
+    }
 }
