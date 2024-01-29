@@ -8,8 +8,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.miniworld.miniworld.model.Point;
 import org.miniworld.miniworld.model.SpatialGraph;
 import org.miniworld.miniworld.model.World;
+import org.miniworld.miniworld.utils.MathUtils;
 import org.miniworld.miniworld.view.GraphView;
 import org.miniworld.miniworld.view.Viewport;
 
@@ -37,7 +39,8 @@ public class Application extends javafx.application.Application {
             public void handle(long l) {
                 gc.clearRect(0, 0, graphView.getWidth(), graphView.getHeight());
                 world.generate();
-                world.draw(gc);
+                Point viewpoint = viewport.getCanvasPointForViewportPoint(viewport.center());
+                world.draw(gc, viewpoint);
                 graphView.draw();
             }
         };

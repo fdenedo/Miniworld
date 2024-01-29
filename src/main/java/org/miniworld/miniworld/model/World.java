@@ -3,6 +3,7 @@ package org.miniworld.miniworld.model;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import org.miniworld.miniworld.gameassets.Tree;
 import org.miniworld.miniworld.utils.MathUtils;
 import org.miniworld.miniworld.view.BoundingBox;
 import org.miniworld.miniworld.view.Envelope;
@@ -26,7 +27,7 @@ public class World {
     Canvas worldCanvas;
     List<Segment> roadBorders;
     List<Polygon> buildings;
-    List<Point> trees;
+    List<Tree> trees;
     double buildingWidth;
     double buildingMinLength;
     double spacing;
@@ -73,7 +74,7 @@ public class World {
         this.previousGraph = graph.deepCopy();
     }
 
-    private List<Point> generateTrees() {
+    private List<Tree> generateTrees() {
         double left = Double.MAX_VALUE;
         double right = Double.MIN_VALUE;
         double top = Double.MAX_VALUE;
@@ -114,7 +115,7 @@ public class World {
         .toList();
 
 
-        List<Point> trees = new ArrayList<>();
+        List<Tree> trees = new ArrayList<>();
         int tryCount = 0;
 
         while (tryCount < 100) {
@@ -134,8 +135,8 @@ public class World {
 
             // make sure trees don't overlap each other
             if (keep) {
-                for (Point tree : trees) {
-                    if (distance(tree, p) < this.treeSize) {
+                for (Tree tree : trees) {
+                    if (distance(tree.getCentre(), p) < this.treeSize) {
                         keep = false;
                         break;
                     }
@@ -155,7 +156,7 @@ public class World {
             }
 
             if (keep) {
-                trees.add(p);
+                trees.add(new Tree(p, treeSize));
                 tryCount = 0;
             }
 
@@ -235,7 +236,7 @@ public class World {
         context.stroke();
     }
 
-    public void draw(GraphicsContext context) {
+    public void draw(GraphicsContext context, Point viewpoint) {
         drawBackground(context);
         for (Envelope envelope : this.envelopes) {
             envelope.draw(context);
@@ -243,10 +244,8 @@ public class World {
         for (Segment border : this.roadBorders) {
             drawSegment(context, border);
         }
-        for (Point tree : trees) {
-            context.setFill(Color.GREEN);
-            context.setFill(Color.color(0.2, 0.9, 0.2, 0.6));
-            context.fillOval(tree.getX() - treeSize / 2, tree.getY() - treeSize / 2, treeSize, treeSize);
+        for (Tree tree : trees) {
+            tree.draw(context, viewpoint);
         }
         for (Polygon poly : this.buildings) {
             poly.draw(context, Color.DARKGRAY, 2);
