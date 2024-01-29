@@ -9,6 +9,9 @@ import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.Pane;
 import org.miniworld.miniworld.model.Point;
 
+import static org.miniworld.miniworld.utils.MathUtils.scale;
+import static org.miniworld.miniworld.utils.MathUtils.subtract;
+
 public class Viewport extends Pane {
     private static final double MAX_ZOOM_IN = 1;
     private static final double MAX_ZOOM_OUT = 5;
@@ -34,6 +37,13 @@ public class Viewport extends Pane {
         this.setOnMouseReleased(this::handleMouseReleased);
 
         centreCanvas();
+    }
+
+    public Point center() {
+        double viewportCentreX = getWidth() / 2;
+        double viewportCentreY = getHeight() / 2;
+
+        return new Point(viewportCentreX, viewportCentreY);
     }
 
     public Point getCanvasTopLeftPosition() {
@@ -106,6 +116,16 @@ public class Viewport extends Pane {
         if (event.getButton() == MouseButton.MIDDLE) {
             this.panning = false;
         }
+    }
+
+    public Point getCanvasPointForViewportPoint(Point viewportPoint) {
+        double canvasTranslateX = canvas.getTranslateX();
+        double canvasTranslateY = canvas.getTranslateY();
+
+        double translatedViewportX = (viewportPoint.getX() - canvasTranslateX);
+        double translatedViewportY = (viewportPoint.getY() - canvasTranslateY);
+
+        return new Point(translatedViewportX, translatedViewportY);
     }
 
     private void centreCanvas() {
