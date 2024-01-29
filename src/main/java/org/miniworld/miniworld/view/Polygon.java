@@ -132,6 +132,22 @@ public class Polygon {
         context.fill();
     }
 
+    public void draw(GraphicsContext context, Color fillColor, Color lineColor, double lineWidth) {
+        context.setFill(fillColor);
+        context.setStroke(lineColor);
+        context.setLineWidth(lineWidth);
+        context.beginPath();
+        context.moveTo(points[0].getX(), points[0].getY());
+
+        for (int i = 1; i <= points.length; i++) {
+            int index = i % points.length;
+            context.lineTo(points[index].getX(), points[index].getY());
+        }
+
+        context.fill();
+        context.stroke();
+    }
+
     public boolean intersectsPolygon(Polygon p) {
         for (Segment e1 : this.edges) {
             for (Segment e2 : p.edges) {
