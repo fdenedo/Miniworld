@@ -25,6 +25,10 @@ public class Polygon {
         return boundingBox;
     }
 
+    public Point[] getPoints() {
+        return points;
+    }
+
     public static void breakSegments(Polygon polygon1, Polygon polygon2) {
         List<Segment> edges1 = polygon1.edges;
         List<Segment> edges2 = polygon2.edges;
