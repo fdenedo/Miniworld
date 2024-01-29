@@ -3,8 +3,7 @@ package org.miniworld.miniworld.model;
 import java.util.Objects;
 import java.util.Optional;
 
-import static org.miniworld.miniworld.utils.MathUtils.normalise;
-import static org.miniworld.miniworld.utils.MathUtils.subtract;
+import static org.miniworld.miniworld.utils.MathUtils.*;
 
 public class Segment {
     Point p1, p2;
@@ -112,5 +111,25 @@ public class Segment {
         double maxY = Math.max(p1.y, p2.y);
 
         return (point.x >= minX && point.x <= maxX && point.y >= minY && point.y <= maxY);
+    }
+
+    public double distanceToPoint(Point p) {
+        Point v = subtract(p2, p1);
+        Point w = subtract(p, p1);
+
+        double c1 = dot(w, v);
+        if (c1 <= 0) {
+            return magnitude(subtract(p, p1));
+        }
+
+        double c2 = dot(v, v);
+        if (c2 <= c1) {
+            return magnitude(subtract(p, p2));
+        }
+
+        double b = c1 / c2;
+        Point pb = add(p1, scale(v, b));
+
+        return magnitude(subtract(p, pb));
     }
 }

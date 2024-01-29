@@ -30,6 +30,10 @@ public class Envelope {
         return this.polygon;
     }
 
+    public BoundingBox getBoundingBox() {
+        return this.boundingBox;
+    }
+
     public Polygon createPolygon(int roundness) {
         Point p1 = segment.getP1();
         Point p2 = segment.getP2();

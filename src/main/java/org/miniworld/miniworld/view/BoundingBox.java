@@ -16,6 +16,14 @@ public class BoundingBox {
         this.height = bottomRight.getY() - topLeft.getY();
     }
 
+    public Point getTopLeft() {
+        return topLeft;
+    }
+
+    public Point getBottomRight() {
+        return bottomRight;
+    }
+
     public boolean pointInBoundingBox(Point p) {
         return  p.getX() > topLeft.getX()
                 && p.getX() < bottomRight.getX()

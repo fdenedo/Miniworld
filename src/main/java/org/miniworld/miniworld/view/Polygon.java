@@ -5,13 +5,12 @@ import javafx.scene.paint.Color;
 import org.miniworld.miniworld.model.Point;
 import org.miniworld.miniworld.model.Segment;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class Polygon {
     Point[] points;
     List<Segment> edges;
+    BoundingBox boundingBox;
 
     public Polygon(Point[] points) {
         this.points = points;
@@ -19,6 +18,11 @@ public class Polygon {
         for (int i = 1; i <= points.length; i++) {
             this.edges.add(new Segment(points[i - 1], points[i % points.length]));
         }
+        this.boundingBox = calculateBoundingBox();
+    }
+
+    public BoundingBox getBoundingBox() {
+        return boundingBox;
     }
 
     public static void breakSegments(Polygon polygon1, Polygon polygon2) {
@@ -80,9 +84,9 @@ public class Polygon {
         return this.containsPoint(edge.midpoint());
     }
 
-    private boolean containsPoint(Point midpoint) {
+    public boolean containsPoint(Point point) {
         Point pointOutsideAllPolygons = new Point(-10000, -10000);
-        Segment ray = new Segment(pointOutsideAllPolygons, midpoint);
+        Segment ray = new Segment(pointOutsideAllPolygons, point);
         int intersectionCount = 0;
 
         for (Segment edge : this.edges) {
@@ -131,5 +135,29 @@ public class Polygon {
             }
         }
         return false;
+    }
+
+    private BoundingBox calculateBoundingBox() {
+        double minX = Double.MAX_VALUE;
+        double minY = Double.MAX_VALUE;
+        double maxX = Double.MIN_VALUE;
+        double maxY = Double.MIN_VALUE;
+
+        for (Point point : this.points) {
+            minX = Math.min(minX, point.getX());
+            minY = Math.min(minY, point.getY());
+            maxX = Math.max(maxX, point.getX());
+            maxY = Math.max(maxY, point.getY());
+        }
+
+        return new BoundingBox(new Point(minX, minY), new Point(maxX, maxY));
+    }
+
+    public double distanceToPoint(Point p) {
+        return Collections.min(this.edges.stream().map(e -> e.distanceToPoint(p)).toList());
+    }
+
+    public double distanceToPolygon(Polygon polygon) {
+        return Collections.min(Arrays.stream(this.points).map(polygon::distanceToPoint).toList());
     }
 }
