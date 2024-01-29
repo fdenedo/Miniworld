@@ -220,7 +220,7 @@ public class World {
             }
         }
 
-        return bases.stream().map(Building::new).toList();
+        return bases.stream().map(b -> new Building(b, 0.4)).toList();
     }
 
     private void drawBackground(GraphicsContext context) {
@@ -251,7 +251,7 @@ public class World {
             tree.draw(context, viewpoint, treeRNG);
         }
         for (Building building : this.buildings) {
-            building.getBase().draw(context, Color.DARKGRAY, 2);
+            building.draw(context);
         }
     }
 }
