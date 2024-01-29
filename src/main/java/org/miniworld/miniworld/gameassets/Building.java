@@ -13,11 +13,11 @@ import static org.miniworld.miniworld.utils.MathUtils.*;
 
 public class Building implements WorldObject {
     Polygon base;
-    double heightCoef;
+    double height;
 
-    public Building(Polygon base, double heightCoef) {
+    public Building(Polygon base, double height) {
         this.base = base;
-        this.heightCoef = heightCoef;
+        this.height = height;
     }
 
     public Polygon getBase() {
@@ -26,7 +26,11 @@ public class Building implements WorldObject {
 
     public void draw(GraphicsContext context, Point viewpoint) {
         List<Point> top = Arrays.stream(this.base.getPoints())
-                .map(p -> add(p, scale(subtract(p, viewpoint), heightCoef)))
+                .map(p -> {
+                    double distance = distance(p, viewpoint);
+                    double perspectiveScale = 1.0 / Math.max(1.0 + distance, 500); // 500 is a random value right now, I need to make this
+                    return add(p, scale(subtract(p, viewpoint), height * perspectiveScale));
+                })
                 .toList();
         Polygon ceiling = new Polygon(top.toArray(new Point[0]));
         List<Polygon> sides = new ArrayList<>();
