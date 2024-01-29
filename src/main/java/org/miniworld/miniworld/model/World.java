@@ -259,6 +259,7 @@ public class World {
         worldObjects.sort((a, b) -> Double.compare(b.getBase().distanceToPoint(viewpoint), a.getBase().distanceToPoint(viewpoint)));
         for (WorldObject obj : worldObjects) {
             if (obj instanceof Tree) {
+                // TODO: Trees flicker now because they get drawn in a different order depending on how far they are from the current viewpoint
                 ((Tree) obj).draw(context, viewpoint, treeRNG);
             } else {
                 ((Building) obj).draw(context, viewpoint);
