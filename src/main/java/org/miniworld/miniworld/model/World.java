@@ -158,7 +158,7 @@ public class World {
             }
 
             if (keep) {
-                trees.add(new Tree(p, treeSize, 0.2));
+                trees.add(new Tree(p, treeSize, 28));
                 tryCount = 0;
             }
 

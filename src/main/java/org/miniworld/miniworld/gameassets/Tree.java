@@ -17,13 +17,13 @@ public class Tree implements WorldObject {
 
     Point centre;
     double size;
-    double heightCoef;
+    double height;
     Polygon base;
 
-    public Tree(Point centre, double size, double heightCoef) {
+    public Tree(Point centre, double size, double height) {
         this.centre = centre;
         this.size = size;
-        this.heightCoef = heightCoef;
+        this.height = height;
         this.base = base(centre, size);
     }
 
@@ -37,8 +37,9 @@ public class Tree implements WorldObject {
 
     public void draw(GraphicsContext context, Point viewpoint, Random treeRNG) {
         Point difference = subtract(this.centre, viewpoint);
-
-        Point top = MathUtils.add(this.centre, scale(difference, heightCoef));
+        double distance = distance(this.centre, viewpoint);
+        double perspectiveScale = 1.0 / Math.max(1.0 + distance, 500);
+        Point top = MathUtils.add(this.centre, scale(difference, height * perspectiveScale));
 
         double levelCount = 7;
         for (int level = 0; level < levelCount; level++) {
