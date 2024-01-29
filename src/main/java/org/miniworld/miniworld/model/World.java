@@ -3,6 +3,7 @@ package org.miniworld.miniworld.model;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import org.miniworld.miniworld.gameassets.Building;
 import org.miniworld.miniworld.gameassets.Tree;
 import org.miniworld.miniworld.utils.MathUtils;
 import org.miniworld.miniworld.view.BoundingBox;
@@ -12,7 +13,6 @@ import org.miniworld.miniworld.view.Polygon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.miniworld.miniworld.utils.MathUtils.distance;
@@ -27,7 +27,7 @@ public class World {
     List<Envelope> envelopes;
     Canvas worldCanvas;
     List<Segment> roadBorders;
-    List<Polygon> buildings;
+    List<Building> buildings;
     List<Tree> trees;
     double buildingWidth;
     double buildingMinLength;
@@ -100,8 +100,8 @@ public class World {
         }
 
         // update bounding box based on buildings
-        for (Polygon building : this.buildings) {
-            BoundingBox buildingBoundingBox = building.getBoundingBox();
+        for (Building building : this.buildings) {
+            BoundingBox buildingBoundingBox = building.getBase().getBoundingBox();
 
             left = Math.min(left, buildingBoundingBox.getTopLeft().getX());
             right = Math.max(right, buildingBoundingBox.getBottomRight().getX());
@@ -110,7 +110,7 @@ public class World {
         }
 
         List<Polygon> illegal = Stream.concat(
-            this.buildings.stream(),
+            this.buildings.stream().map(Building::getBase),
             this.envelopes.stream().map(Envelope::getPolygon)
         )
         .toList();
@@ -168,7 +168,7 @@ public class World {
     }
 
 
-    private List<Polygon> generateBuildings() {
+    private List<Building> generateBuildings() {
         List<Envelope> tmp = new ArrayList<>();
 
         for (Segment segment : this.graph.segments) {
@@ -220,7 +220,7 @@ public class World {
             }
         }
 
-        return bases;
+        return bases.stream().map(Building::new).toList();
     }
 
     private void drawBackground(GraphicsContext context) {
@@ -250,8 +250,8 @@ public class World {
         for (Tree tree : trees) {
             tree.draw(context, viewpoint, treeRNG);
         }
-        for (Polygon poly : this.buildings) {
-            poly.draw(context, Color.DARKGRAY, 2);
+        for (Building building : this.buildings) {
+            building.getBase().draw(context, Color.DARKGRAY, 2);
         }
     }
 }
