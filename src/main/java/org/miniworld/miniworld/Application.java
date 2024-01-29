@@ -22,7 +22,7 @@ public class Application extends javafx.application.Application {
         SpatialGraph graph = SpatialGraph.dummyGraph();
 
         GraphView graphView = new GraphView(2000, 2000, graph);
-        World world = new World(graphView, graph, 40, 20, 50, 50, 15, 30);
+        World world = new World(graphView, graph, 40, 20, 50, 60, 18, 40);
         GraphicsContext gc = graphView.getContext();
 
         Viewport viewport = new Viewport(graphView);
