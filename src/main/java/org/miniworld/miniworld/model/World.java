@@ -11,6 +11,7 @@ import org.miniworld.miniworld.view.Polygon;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -156,7 +157,7 @@ public class World {
             }
 
             if (keep) {
-                trees.add(new Tree(p, treeSize, 0.3));
+                trees.add(new Tree(p, treeSize, 0.2));
                 tryCount = 0;
             }
 
@@ -237,6 +238,8 @@ public class World {
     }
 
     public void draw(GraphicsContext context, Point viewpoint) {
+        Random treeRNG = new Random(Tree.SEED);
+
         drawBackground(context);
         for (Envelope envelope : this.envelopes) {
             envelope.draw(context);
@@ -245,7 +248,7 @@ public class World {
             drawSegment(context, border);
         }
         for (Tree tree : trees) {
-            tree.draw(context, viewpoint);
+            tree.draw(context, viewpoint, treeRNG);
         }
         for (Polygon poly : this.buildings) {
             poly.draw(context, Color.DARKGRAY, 2);
