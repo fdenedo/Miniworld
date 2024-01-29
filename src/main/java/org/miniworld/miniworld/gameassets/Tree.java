@@ -35,8 +35,7 @@ public class Tree {
             Color color = Color.color(
                     0.2,
                     lerp(0.4, 1, t),
-                    0.3,
-                    0.9
+                    0.4
             );
             context.setFill(color);
             context.fillOval(point.getX() - levelSize / 2, point.getY() - levelSize / 2, levelSize, levelSize);
