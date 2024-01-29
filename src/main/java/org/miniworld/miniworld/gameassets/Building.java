@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.miniworld.miniworld.utils.MathUtils.*;
 
-public class Building {
+public class Building implements WorldObject {
     Polygon base;
     double heightCoef;
 

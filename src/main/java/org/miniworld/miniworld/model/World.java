@@ -5,6 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import org.miniworld.miniworld.gameassets.Building;
 import org.miniworld.miniworld.gameassets.Tree;
+import org.miniworld.miniworld.gameassets.WorldObject;
 import org.miniworld.miniworld.utils.MathUtils;
 import org.miniworld.miniworld.view.BoundingBox;
 import org.miniworld.miniworld.view.Envelope;
@@ -247,11 +248,20 @@ public class World {
         for (Segment border : this.roadBorders) {
             drawSegment(context, border);
         }
-        for (Tree tree : trees) {
-            tree.draw(context, viewpoint, treeRNG);
-        }
-        for (Building building : this.buildings) {
-            building.draw(context, viewpoint);
+
+        List<WorldObject> worldObjects = Stream
+            .concat(
+                this.trees.stream(),
+                this.buildings.stream()
+            )
+            .toList();
+
+        for (WorldObject obj : worldObjects) {
+            if (obj instanceof Tree) {
+                ((Tree) obj).draw(context, viewpoint, treeRNG);
+            } else {
+                ((Building) obj).draw(context, viewpoint);
+            }
         }
     }
 }

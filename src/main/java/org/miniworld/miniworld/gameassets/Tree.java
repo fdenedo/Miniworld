@@ -12,17 +12,22 @@ import java.util.Random;
 
 import static org.miniworld.miniworld.utils.MathUtils.*;
 
-public class Tree {
+public class Tree implements WorldObject {
     public static final long SEED = 123456789L;
 
     Point centre;
     double size;
     double heightCoef;
+    Polygon base;
 
     public Tree(Point centre, double size, double heightCoef) {
         this.centre = centre;
         this.size = size;
         this.heightCoef = heightCoef;
+    }
+
+    public Polygon getBase() {
+        return this.base;
     }
 
     public Point getCentre() {
@@ -45,6 +50,7 @@ public class Tree {
                     0.4
             );
             Polygon poly = generateTreeLevel(point, levelSize, treeRNG);
+            if (level == 0) this.base = poly;
             poly.draw(context, color, 0);
         }
     }
@@ -58,4 +64,5 @@ public class Tree {
         }
         return new Polygon(points.toArray(new Point[0]));
     }
+
 }
