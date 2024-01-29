@@ -220,7 +220,7 @@ public class World {
             }
         }
 
-        return bases.stream().map(b -> new Building(b, 0.4)).toList();
+        return bases.stream().map(b -> new Building(b, 0.28)).toList();
     }
 
     private void drawBackground(GraphicsContext context) {
