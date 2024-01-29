@@ -24,6 +24,7 @@ public class Tree implements WorldObject {
         this.centre = centre;
         this.size = size;
         this.heightCoef = heightCoef;
+        this.base = base(centre, size);
     }
 
     public Polygon getBase() {
@@ -58,9 +59,19 @@ public class Tree implements WorldObject {
     private Polygon generateTreeLevel(Point point, double size, Random treeRNG) {
         List<Point> points = new ArrayList<>();
         double radius = size / 2;
-        for (double a = 0; a < 2 * Math.PI; a += Math.PI / 16) {
+        for (double a = 0; a < 2 * Math.PI; a += Math.PI / 8) {
             double noisyRadius = radius * lerp(0.5, 1, treeRNG.nextDouble());
             points.add(point.translate(a, noisyRadius));
+        }
+        return new Polygon(points.toArray(new Point[0]));
+    }
+
+    private Polygon base(Point point, double size) {
+        List<Point> points = new ArrayList<>();
+        double radius = size / 2;
+        double sizeCoef = 0.75;
+        for (double a = 0; a < 2 * Math.PI; a += Math.PI / 16) {
+            points.add(point.translate(a, radius * sizeCoef));
         }
         return new Polygon(points.toArray(new Point[0]));
     }

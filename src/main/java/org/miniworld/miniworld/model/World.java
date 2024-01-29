@@ -249,13 +249,14 @@ public class World {
             drawSegment(context, border);
         }
 
-        List<WorldObject> worldObjects = Stream
-            .concat(
-                this.trees.stream(),
-                this.buildings.stream()
-            )
-            .toList();
+        List<WorldObject> worldObjects = new ArrayList<>(Stream
+                .concat(
+                        this.trees.stream(),
+                        this.buildings.stream()
+                )
+                .toList());
 
+        worldObjects.sort((a, b) -> Double.compare(b.getBase().distanceToPoint(viewpoint), a.getBase().distanceToPoint(viewpoint)));
         for (WorldObject obj : worldObjects) {
             if (obj instanceof Tree) {
                 ((Tree) obj).draw(context, viewpoint, treeRNG);
