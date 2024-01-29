@@ -251,7 +251,7 @@ public class World {
             tree.draw(context, viewpoint, treeRNG);
         }
         for (Building building : this.buildings) {
-            building.draw(context);
+            building.draw(context, viewpoint);
         }
     }
 }
